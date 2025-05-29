@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBarangRequest;
-use App\Http\Requests\UpdateBarangRequest;
-use App\Models\Barang;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\Customer;
 
-class BarangController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('barang.index', [
-            'barangs' => Barang::latest()->paginate(10),
+        return view('customer.index', [
+            'customers' => Customer::latest()->paginate(10),
         ]);
     }
 
@@ -23,24 +23,24 @@ class BarangController extends Controller
      */
     public function create()
     {
-        return view('barang.create');
+        return view('customer.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBarangRequest $request)
+    public function store(StoreCustomerRequest $request)
     {
         $validatedData = $request->validated();
-        Barang::create($validatedData);
+        Customer::create($validatedData);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan.');
+        return redirect()->route('customer.index')->with('success', 'Customer berhasil ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Barang $barang)
+    public function show(Customer $customer)
     {
         //
     }
@@ -48,7 +48,7 @@ class BarangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Barang $barang)
+    public function edit(Customer $customer)
     {
         //
     }
@@ -56,7 +56,7 @@ class BarangController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBarangRequest $request, Barang $barang)
+    public function update(UpdateCustomerRequest $request, Customer $customer)
     {
         //
     }
@@ -64,7 +64,7 @@ class BarangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Barang $barang)
+    public function destroy(Customer $customer)
     {
         //
     }

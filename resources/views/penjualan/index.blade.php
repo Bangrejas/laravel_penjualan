@@ -1,7 +1,8 @@
 @extends('layouts.app') {{-- Jika kamu pakai layout --}}
 @section('content')
     <h3>Daftar Penjualan</h3>
-    <a href="{{ route('penjualan.create') }}" class="btn btn-primary mb-3">Input Penjualan Baru</a>
+    <a href="{{ route('barang.index') }}" class="btn btn-primary mb-3">Master Barang</a>
+    <a href="{{ route('customer.index') }}" class="btn btn-primary mb-3">Master Customer</a>
     <!-- <pre>{{ print_r($penjualans, true) }}</pre> -->
 
     <table class="table-bordered table">

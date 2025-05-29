@@ -17,4 +17,10 @@ class Barang extends Model
     {
         return $this->hasMany(Dijual::class, 'kode_barang', 'kode_barang');
     }
+
+    // relasi dengan model jenis
+    public function jenis()
+    {
+        return $this->belongsTo(Jenis::class, 'kode_jenis', 'kode_jenis');
+    }
 }

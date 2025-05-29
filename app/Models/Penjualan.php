@@ -24,9 +24,9 @@ class Penjualan extends Model
         return $this->belongsTo(Jenis::class, 'kode_jenis', 'kode_jenis');
     }
 
-    // relasi dengan model user
-    public function user()
+    // relasi dengan model customer
+    public function customer()
     {
-        return $this->belongsTo(User::class, 'kode_customer', 'kode_customer');
+        return $this->belongsTo(Customer::class, 'kode_customer', 'kode_customer');
     }
 }

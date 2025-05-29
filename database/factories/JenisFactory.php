@@ -17,7 +17,10 @@ class JenisFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'kode_jenis' => $this->faker->unique()->numerify('JENIS-###'),
+            'nama_jenis' => $this->faker->word(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
