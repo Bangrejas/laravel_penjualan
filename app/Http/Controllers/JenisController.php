@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePenjualanRequest;
-use App\Http\Requests\UpdatePenjualanRequest;
-use App\Models\Penjualan;
+use App\Http\Requests\StoreJenisRequest;
+use App\Http\Requests\UpdateJenisRequest;
+use App\Models\Jenis;
 
-class PenjualanController extends Controller
+class JenisController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('penjualan.index', [
-            'penjualans' => Penjualan::with(['jenis', 'dijual'])->latest()->paginate(10),
-        ]);
+        //
     }
 
     /**
@@ -29,7 +27,7 @@ class PenjualanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePenjualanRequest $request)
+    public function store(StoreJenisRequest $request)
     {
         //
     }
@@ -37,7 +35,7 @@ class PenjualanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Penjualan $penjualan)
+    public function show(Jenis $jenis)
     {
         //
     }
@@ -45,7 +43,7 @@ class PenjualanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Penjualan $penjualan)
+    public function edit(Jenis $jenis)
     {
         //
     }
@@ -53,7 +51,7 @@ class PenjualanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePenjualanRequest $request, Penjualan $penjualan)
+    public function update(UpdateJenisRequest $request, Jenis $jenis)
     {
         //
     }
@@ -61,7 +59,7 @@ class PenjualanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Penjualan $penjualan)
+    public function destroy(Jenis $jenis)
     {
         //
     }

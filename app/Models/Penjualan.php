@@ -2,39 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Penjualan extends Model
 {
-    protected $table = 't_jual';
-    protected $primaryKey = 'No_Faktur';
-    public $incrementing = false;
-    public $timestamps = false;
+    /** @use HasFactory<\Database\Factories\PenjualanFactory> */
+    use HasFactory;
 
-    protected $fillable = [
-        'No_Faktur',
-        'Kode_Customer',
-        'Kode_Tjen',
-        'Tgl_Faktur',
-        'Total_Bruto',
-        'Total_Diskon',
-        'Total_Jumlah',
-        'Total_Netto',
-    ];
+    protected $guarded = ['id'];
 
-    public function customer()
+    // relasi dengan model dijual
+    public function dijual()
     {
-        return $this->belongsTo(Customer::class, 'Kode_Customer', 'Kode_Customer');
+        return $this->hasMany(Dijual::class, 'kode_penjualan', 'kode_penjualan');
     }
 
+    // relasi dengan model jenis
     public function jenis()
     {
-        return $this->belongsTo(JenisTransaksi::class, 'Kode_Tjen', 'Kode_Tjen');
+        return $this->belongsTo(Jenis::class, 'kode_jenis', 'kode_jenis');
     }
 
-    public function details()
+    // relasi dengan model user
+    public function user()
     {
-        return $this->hasMany(Djual::class, 'No_Faktur', 'No_Faktur');
+        return $this->belongsTo(User::class, 'kode_customer', 'kode_customer');
     }
-
 }

@@ -15,17 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        $this->call([
-            CustomerSeeder::class,
-            BarangSeeder::class,
-            JenisTransaksiSeeder::class,
-            PenjualanSeeder::class,
-            DjualSeeder::class,
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('admin123'), // Use bcrypt for password hashing
         ]);
     }
 }

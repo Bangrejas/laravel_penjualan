@@ -2,48 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreBarangRequest;
+use App\Http\Requests\UpdateBarangRequest;
 use App\Models\Barang;
 
 class BarangController extends Controller
 {
-    // Ambil data barang berdasarkan kode (untuk autofill)
-    public function show($kode)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        $barang = Barang::where('Kode_Barang', $kode)->first();
-
-        if (!$barang) {
-            return response()->json(['error' => 'Barang tidak ditemukan'], 404);
-        }
-
-        return response()->json([
-            'Kode_Barang' => $barang->Kode_Barang,
-            'Nama_Barang' => $barang->Nama_Barang,
-            'Harga_Barang' => $barang->Harga_Barang,
+        return view('barang.index', [
+            'barangs' => Barang::with(['jenis'])->latest()->paginate(10),
         ]);
     }
 
-    // Pencarian barang (untuk autocomplete)
-    public function search(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $term = $request->q;
-
-        $data = Barang::where('Kode_Barang', 'like', "%$term%")
-            ->orWhere('Nama_Barang', 'like', "%$term%")
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'label' => $item->Kode_Barang . ' - ' . $item->Nama_Barang,
-                    'value' => $item->Kode_Barang,
-                    'nama'  => $item->Nama_Barang,
-                    'harga' => $item->Harga_Barang,
-                ];
-            })
-            ->values() // urutkan ulang index
-            ->all();   // konversi ke array biasa (BUKAN Collection)
-
-        return response()->json($data);
+        //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreBarangRequest $request)
+    {
+        //
+    }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(Barang $barang)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Barang $barang)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateBarangRequest $request, Barang $barang)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Barang $barang)
+    {
+        //
+    }
 }
