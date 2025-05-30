@@ -11,7 +11,7 @@ class StoreDijualRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreDijualRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'kode_barang' => 'required|exists:barang,kode_barang',
+            'harga' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:1',
+            'diskon' => 'nullable|numeric|min:0',
+            'brutto' => 'nullable|numeric|min:0',
+            'jumlah' => 'nullable|numeric|min:0',
         ];
     }
 }

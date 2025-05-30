@@ -11,7 +11,7 @@ class StorePenjualanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,20 @@ class StorePenjualanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'no_faktur' => 'required|unique:penjualans,no_faktur',
+            'tgl_faktur' => 'required|date',
+            'kode_customer' => 'required|exists:customers,kode_customer',
+            'kode_jenis' => 'required|exists:jenis_transaksis,kode_jenis',
+
+            // Validasi nested array
+            'kode_barang' => 'required|array|min:1',
+            'kode_barang.*' => 'required|exists:barangs,kode_barang',
+            'harga' => 'required|array',
+            'harga.*' => 'required|numeric|min:1',
+            'quantity' => 'required|array',
+            'quantity.*' => 'required|numeric|min:1',
+            'diskon' => 'array',
+            'diskon.*' => 'nullable|numeric|min:0',
         ];
     }
 }

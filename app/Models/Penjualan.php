@@ -15,7 +15,7 @@ class Penjualan extends Model
     // relasi dengan model dijual
     public function dijual()
     {
-        return $this->hasMany(Dijual::class, 'kode_penjualan', 'kode_penjualan');
+        return $this->hasMany(Dijual::class, 'no_faktur', 'no_faktur');
     }
 
     // relasi dengan model jenis

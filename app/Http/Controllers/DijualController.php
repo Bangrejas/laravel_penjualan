@@ -21,7 +21,9 @@ class DijualController extends Controller
      */
     public function create()
     {
-        //
+        return view('penjualan.index', [
+            'dijuals' => Dijual::with(['barang'])->latest()->paginate(10),
+        ]);
     }
 
     /**
@@ -29,7 +31,10 @@ class DijualController extends Controller
      */
     public function store(StoreDijualRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        Dijual::create($validatedData);
+
+        return redirect()->route('penjualan.index')->with('success', 'Barang berhasil ditambahkan ke daftar dijual.');
     }
 
     /**

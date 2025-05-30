@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
-            $table->string('no_faktur')->unique();
+            $table->bigInteger('no_faktur')->unique();
             $table->date('tanggal_faktur');
             $table->float('total_brutto', 15, 2);
             $table->float('total_diskon', 15, 2)->default(0);
