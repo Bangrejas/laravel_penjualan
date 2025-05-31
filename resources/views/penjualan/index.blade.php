@@ -88,6 +88,9 @@
                             <td>
                                 <input type="text" name="jumlah[]" class="form-control jumlah-barang" readonly>
                             </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm hapus-barang">Hapus</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -223,6 +226,19 @@
                     hitungTotal(); // 🟢 Tambahkan ini agar total otomatis terupdate
                 }
             });
+
+            // Saat klik tombol hapus barang
+            barangBody.addEventListener('click', function(e) {
+                if (e.target.classList.contains('hapus-barang')) {
+                    const rows = barangBody.querySelectorAll('tr');
+                    if (rows.length > 1) {
+                        e.target.closest('tr').remove();
+                        hitungTotal(); // Update total setelah menghapus
+                    } else {
+                        alert('Minimal satu baris barang harus ada.');
+                    }
+                }
+            });
         });
 
         function hitungTotal() {
@@ -252,6 +268,17 @@
             newRow.querySelectorAll('input').forEach(input => {
                 input.value = '';
             });
+
+            // Pastikan tombol hapus ada di baris baru
+            if (!newRow.querySelector('.hapus-barang')) {
+                const td = document.createElement('td');
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-danger btn-sm hapus-barang';
+                btn.textContent = 'Hapus';
+                td.appendChild(btn);
+                newRow.appendChild(td);
+            }
 
             newRow.querySelector('.kode-barang').selectedIndex = 0;
 
