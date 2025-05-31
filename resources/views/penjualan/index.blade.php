@@ -1,12 +1,10 @@
 @extends('layouts.app') {{-- Jika kamu pakai layout --}}
 @section('content')
-    <h3>Daftar Penjualan</h3>
     <a href="{{ route('barang.index') }}" class="btn btn-primary mb-3">Master Barang</a>
     <a href="{{ route('customer.index') }}" class="btn btn-primary mb-3">Master Customer</a>
     <!-- <pre>{{ print_r($penjualans, true) }}</pre> -->
 
     {{-- HEADER TRANSAKSI --}}
-    <h3>Transaksi Penjualan</h3>
     <form action="{{ route('penjualan.store') }}" method="POST">
         @csrf
 
@@ -101,52 +99,60 @@
 
         {{-- Tabel Faktur Penjualan --}}
         <div class="card mb-3">
-            <div class="card-header">
-                <h4>Faktur Penjualan</h4>
-                <div class="card-body">
-                    <table class="table-bordered table">
-                        <thead>
+            <div class="card-header">Faktur Penjualan</div>
+            <div class="card-body">
+                <table class="table-bordered table">
+                    <thead>
+                        <tr>
+                            <th>No Faktur</th>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Harga</th>
+                            <th>Quantity</th>
+                            <th>Diskon</th>
+                            <th>Bruto</th>
+                            <th>Jumlah</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($penjualans as $p)
                             <tr>
-                                <th>No Faktur</th>
-                                <th>Kode Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Harga</th>
-                                <th>Quantity</th>
-                                <th>Diskon</th>
-                                <th>Bruto</th>
-                                <th>Jumlah</th>
+                                <td class="table-secondary font-weight-bold" colspan="8">{{ $p->no_faktur }}
+                                </td>
+                                <td colspan="1">
+                                    <a href="{{ route('penjualan.detail', $p->id) }}"
+                                        class="btn btn-secondary btn-sm">Detail</a>
+                                    <a href="{{ route('penjualan.print', $p->id) }}"
+                                        class="btn btn-secondary btn-sm">Cetak</a>
+                                    <a href="{{ route('penjualan.export', $p->id) }}"
+                                        class="btn btn-secondary btn-sm">Export CSV</a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($penjualans as $p)
-                                <tr class="table-secondary font-weight-bold">
-                                    <td colspan="8">No Faktur: {{ $p->no_faktur }}</td>
-                                </tr>
-                                @foreach ($p->dijual as $item)
-                                    <tr>
-                                        <td></td> {{-- Kosong karena no faktur sudah ditampilkan di baris atas --}}
-                                        <td>{{ $item->kode_barang }}</td>
-                                        <td>{{ $item->barang->nama_barang ?? '-' }}</td>
-                                        <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        <td>{{ $item->diskon }}%</td>
-                                        <td>{{ number_format($item->brutto, 0, ',', '.') }}</td>
-                                        <td>{{ number_format($item->jumlah, 0, ',', '.') }}</td>
-                                    </tr>
-                                @endforeach
-
-                                {{-- Optional: total per faktur --}}
-                                <tr class="table-success font-weight-bold">
-                                    <td colspan="5" class="text-right">Total</td>
-                                    <td>{{ number_format($p->dijual->sum('diskon'), 2) }}%</td>
-                                    <td>{{ number_format($p->dijual->sum('brutto'), 0, ',', '.') }}</td>
-                                    <td>{{ number_format($p->dijual->sum('jumlah'), 0, ',', '.') }}</td>
+                            @foreach ($p->dijual as $item)
+                                <tr>
+                                    <td></td> {{-- Kosong karena no faktur sudah ditampilkan di baris atas --}}
+                                    <td>{{ $item->kode_barang }}</td>
+                                    <td>{{ $item->barang->nama_barang ?? '-' }}</td>
+                                    <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ $item->diskon }}%</td>
+                                    <td>{{ number_format($item->brutto, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($item->jumlah, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
 
-                        </tbody>
-                    </table>
-                </div>
+                            {{-- Optional: total per faktur --}}
+                            <tr class="table-success font-weight-bold">
+                                <td colspan="5" class="text-right">Total</td>
+                                <td>{{ number_format($p->dijual->sum('diskon'), 2) }}%</td>
+                                <td>{{ number_format($p->dijual->sum('brutto'), 0, ',', '.') }}</td>
+                                <td>{{ number_format($p->dijual->sum('jumlah'), 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
             </div>
         </div>
 

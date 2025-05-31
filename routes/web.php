@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PenjualanController::class, 'index'])->name('penjualan.index');
 Route::get('/penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
 Route::post('/penjualan', [PenjualanController::class, 'store'])->name('penjualan.store');
+Route::get('/penjualan/{penjualan}/detail', [PenjualanController::class, 'show'])->name('penjualan.detail');
+Route::get('/penjualan/{penjualan}/print', [PenjualanController::class, 'print'])->name('penjualan.print');
+Route::get('/penjualan/{penjualan}/export', [PenjualanController::class, 'export'])->name('penjualan.export');
+
 
 // barang
 Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');

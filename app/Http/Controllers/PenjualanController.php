@@ -33,10 +33,10 @@ class PenjualanController extends Controller
      */
     public function create()
     {
-        return view('penjualan.create', [
-            'jenis' => Jenis::all(),
-            'customers' => Customer::all(),
-        ]);
+        // return view('penjualan.create', [
+        //     'jenis' => Jenis::all(),
+        //     'customers' => Customer::all(),
+        // ]);
     }
 
     /**
@@ -80,12 +80,7 @@ class PenjualanController extends Controller
             ]);
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data.']);
-        } 
-
-        // $validatedData = $request->validated();
-        // Penjualan::create($validatedData);
-
-        // return redirect()->route('penjualan.index')->with('success', 'Penjualan berhasil ditambahkan.');
+        }
     }
 
     /**
@@ -93,7 +88,64 @@ class PenjualanController extends Controller
      */
     public function show(Penjualan $penjualan)
     {
-        //
+        $penjualan->load(['dijual.barang', 'customer', 'jenis']); // gunakan `load()` di object
+
+        return view('penjualan.show', [
+            'penjualan' => $penjualan,
+        ]);
+    }
+
+    /**
+     * Print the specified resource.
+     */
+    public function print(Penjualan $penjualan)
+    {
+        $penjualan->load(['dijual.barang', 'customer', 'jenis']); // gunakan `load()` di object
+
+        return view('penjualan.print', [
+            'penjualan' => $penjualan,
+        ]);
+    }
+
+    public function export(Penjualan $penjualan)
+    {
+        $penjualan->load(['dijual.barang', 'customer', 'jenis']);
+
+        $filename = 'faktur_' . $penjualan->no_faktur . '.csv';
+
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $columns = ['Barang', 'Harga', 'Qty', 'Diskon', 'Jumlah'];
+
+        $callback = function () use ($penjualan, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['No Faktur:', $penjualan->no_faktur]);
+            fputcsv($file, ['Tanggal:', $penjualan->tanggal_faktur]);
+            fputcsv($file, ['Customer:', $penjualan->customer->nama_customer]);
+            fputcsv($file, ['Jenis:', $penjualan->jenis->nama_jenis]);
+            fputcsv($file, []); // kosong
+            fputcsv($file, $columns);
+
+            foreach ($penjualan->dijual as $item) {
+                fputcsv($file, [
+                    $item->barang->nama_barang,
+                    $item->harga,
+                    $item->quantity,
+                    $item->diskon,
+                    $item->jumlah,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     /**
