@@ -18,6 +18,13 @@
                         <td>{{ $b->kode_barang }}</td>
                         <td>{{ $b->nama_barang }}</td>
                         <td>{{ $b->harga_barang }}</td>
+                        <td>
+                            <form action="{{ route('barang.destroy', $b->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

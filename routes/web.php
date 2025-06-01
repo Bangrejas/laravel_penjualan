@@ -11,17 +11,20 @@ Route::post('/penjualan', [PenjualanController::class, 'store'])->name('penjuala
 Route::get('/penjualan/{penjualan}/detail', [PenjualanController::class, 'show'])->name('penjualan.detail');
 Route::get('/penjualan/{penjualan}/print', [PenjualanController::class, 'print'])->name('penjualan.print');
 Route::get('/penjualan/{penjualan}/export', [PenjualanController::class, 'export'])->name('penjualan.export');
+Route::delete('/penjualan/{penjualan}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
 
 
 // barang
 Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
 Route::get('/barang/create', [BarangController::class, 'create'])->name('barang.create');
 Route::post('/barang', [BarangController::class, 'store'])->name('barang.store');
+Route::delete('/barang/{barang}', [BarangController::class, 'destroy'])->name('barang.destroy');
 
 // customer
 Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
 Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
 Route::post('/customer', [CustomerController::class, 'store'])->name('customer.store');
+Route::delete('/customer/{customer}', [CustomerController::class, 'destroy'])->name('customer.destroy');
 
 // dijual
 Route::get('/dijual', [App\Http\Controllers\DijualController::class, 'index'])->name('dijual.index');

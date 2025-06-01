@@ -16,6 +16,13 @@
                     <tr>
                         <td>{{ $c->kode_customer }}</td>
                         <td>{{ $c->nama_customer }}</td>
+                        <td>
+                            <form action="{{ route('customer.destroy', $c->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

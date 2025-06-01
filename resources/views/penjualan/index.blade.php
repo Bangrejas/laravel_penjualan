@@ -100,65 +100,6 @@
             </div>
         </div>
 
-        {{-- Tabel Faktur Penjualan --}}
-        <div class="card mb-3">
-            <div class="card-header">Faktur Penjualan</div>
-            <div class="card-body">
-                <table class="table-bordered table">
-                    <thead>
-                        <tr>
-                            <th>No Faktur</th>
-                            <th>Kode Barang</th>
-                            <th>Nama Barang</th>
-                            <th>Harga</th>
-                            <th>Quantity</th>
-                            <th>Diskon</th>
-                            <th>Bruto</th>
-                            <th>Jumlah</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($penjualans as $p)
-                            <tr>
-                                <td class="table-secondary font-weight-bold" colspan="8">{{ $p->no_faktur }}
-                                </td>
-                                <td colspan="1">
-                                    <a href="{{ route('penjualan.detail', $p->id) }}"
-                                        class="btn btn-secondary btn-sm">Detail</a>
-                                    <a href="{{ route('penjualan.print', $p->id) }}"
-                                        class="btn btn-secondary btn-sm">Cetak</a>
-                                    <a href="{{ route('penjualan.export', $p->id) }}"
-                                        class="btn btn-secondary btn-sm">Export CSV</a>
-                                </td>
-                            </tr>
-                            @foreach ($p->dijual as $item)
-                                <tr>
-                                    <td></td> {{-- Kosong karena no faktur sudah ditampilkan di baris atas --}}
-                                    <td>{{ $item->kode_barang }}</td>
-                                    <td>{{ $item->barang->nama_barang ?? '-' }}</td>
-                                    <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>{{ $item->diskon }}%</td>
-                                    <td>{{ number_format($item->brutto, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($item->jumlah, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-
-                            {{-- Optional: total per faktur --}}
-                            <tr class="table-success font-weight-bold">
-                                <td colspan="5" class="text-right">Total</td>
-                                <td>{{ number_format($p->dijual->sum('diskon'), 2) }}%</td>
-                                <td>{{ number_format($p->dijual->sum('brutto'), 0, ',', '.') }}</td>
-                                <td>{{ number_format($p->dijual->sum('jumlah'), 0, ',', '.') }}</td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
         {{-- Bagian Total --}}
         <div class="card mb-3">
             <div class="card-header">Total</div>
@@ -179,10 +120,74 @@
         </div>
 
         {{-- Tombol Simpan --}}
-        <div class="mt-3">
+        <div class="mb-3">
             <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
         </div>
     </form>
+
+    {{-- Tabel Faktur Penjualan --}}
+    <div class="card mb-3">
+        <div class="card-header">Faktur Penjualan</div>
+        <div class="card-body">
+            <table class="table-bordered table">
+                <thead>
+                    <tr>
+                        <th>No Faktur</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Barang</th>
+                        <th>Harga</th>
+                        <th>Quantity</th>
+                        <th>Diskon</th>
+                        <th>Bruto</th>
+                        <th>Jumlah</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($penjualans as $p)
+                        <tr>
+                            <td class="table-secondary font-weight-bold" colspan="8">{{ $p->no_faktur }}
+                            </td>
+                            <td colspan="1">
+                                <a href="{{ route('penjualan.detail', $p->id) }}"
+                                    class="btn btn-secondary btn-sm">Detail</a>
+                                <a href="{{ route('penjualan.print', $p->id) }}" class="btn btn-secondary btn-sm">Cetak</a>
+                                <a href="{{ route('penjualan.export', $p->id) }}" class="btn btn-secondary btn-sm">Export
+                                    CSV</a>
+                                <form action="{{ route('penjualan.destroy', $p->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @foreach ($p->dijual as $item)
+                            <tr>
+                                <td></td> {{-- Kosong karena no faktur sudah ditampilkan di baris atas --}}
+                                <td>{{ $item->kode_barang }}</td>
+                                <td>{{ $item->barang->nama_barang ?? '-' }}</td>
+                                <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>{{ $item->diskon }}%</td>
+                                <td>{{ number_format($item->brutto, 0, ',', '.') }}</td>
+                                <td>{{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+
+                        {{-- Optional: total per faktur --}}
+                        <tr class="table-success font-weight-bold">
+                            <td colspan="5" class="text-right">Total</td>
+                            <td>{{ number_format($p->dijual->sum('diskon'), 2) }}%</td>
+                            <td>{{ number_format($p->dijual->sum('brutto'), 0, ',', '.') }}</td>
+                            <td>{{ number_format($p->dijual->sum('jumlah'), 0, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

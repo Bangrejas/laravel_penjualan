@@ -169,6 +169,24 @@ class PenjualanController extends Controller
      */
     public function destroy(Penjualan $penjualan)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Hapus semua data dijual yang berkaitan dengan no_faktur ini
+            Dijual::where('no_faktur', $penjualan->no_faktur)->delete();
+
+            // Hapus penjualan utama
+            $penjualan->delete();
+
+            DB::commit();
+
+            return redirect()->route('penjualan.index')->with('success', 'Faktur berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Gagal menghapus penjualan: ' . $e->getMessage(), [
+                'penjualan_id' => $penjualan->id,
+            ]);
+            return redirect()->back()->withErrors(['error' => 'Gagal menghapus faktur.']);
+        }
     }
 }
